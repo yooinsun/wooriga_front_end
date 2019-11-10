@@ -1,0 +1,40 @@
+import React from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import CalenderContainer from "./containers/CalenderContainer";
+import ChallengeRegist from "./components/ChallengeRegist";
+import LoginConatainer from "./containers/LoginContainer";
+
+import myChallengeContainer from "./containers/myChallengeContainer";
+import myChallengeDetailContainer from "./containers/myChallengeDetailContainer";
+
+import "antd/dist/antd.css";
+
+import MyPage from "./components/MyPage";
+import checkSignUp from "./components/CheckSignUp";
+import MakeGroup from "./components/MakeGroup";
+
+function App() {
+  return (
+    <BrowserRouter>
+      {/* <Route path="/counter" component={src}/> */}
+
+      <Route path="/" component={CalenderContainer} exact />
+      <Route path="/login" component={LoginConatainer} />
+      <Route path="/challenge_regist" component={ChallengeRegist} />
+
+      <Route path="/mychallenge" component={myChallengeContainer} />
+      <Route
+        path="/mychallenge_detail"
+        component={myChallengeDetailContainer}
+      />
+
+      <Route path="/mypage" component={MyPage} />
+      <Route path="/makegroup" component={MakeGroup} />
+      <Route path="/checksignup" component={checkSignUp} />
+
+      {/*<Route path="/" component={Calendar} /> */}
+    </BrowserRouter>
+  );
+}
+
+export default App;
