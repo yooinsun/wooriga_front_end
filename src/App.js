@@ -9,9 +9,9 @@ import myChallengeDetailContainer from "./containers/myChallengeDetailContainer"
 
 import "antd/dist/antd.css";
 
-import MyPage from "./components/MyPage";
+import myPageContainer from "./containers/MyPageContainer";
 import checkSignUp from "./components/CheckSignUp";
-import MakeGroup from "./components/MakeGroup";
+// import MakeGroup from "./components/MakeGroup";
 
 function App() {
   return (
@@ -28,8 +28,8 @@ function App() {
         component={myChallengeDetailContainer}
       />
 
-      <Route path="/mypage" component={MyPage} />
-      <Route path="/makegroup" component={MakeGroup} />
+      <Route path="/mypage" component={myPageContainer} />
+      {/* <Route path="/makegroup" component={MakeGroup} /> */}
       <Route path="/checksignup" component={checkSignUp} />
 
       {/*<Route path="/" component={Calendar} /> */}

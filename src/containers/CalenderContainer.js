@@ -180,7 +180,4 @@ const mapDispatchProps = dispatch => ({
   CalendarActions: bindActionCreators(calendarActions, dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchProps
-)(CalenderContainer);
+export default connect(mapStateToProps, mapDispatchProps)(CalenderContainer);
