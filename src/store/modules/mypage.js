@@ -3,8 +3,9 @@ const OPEN_MODAL = "mypage/OPEN_MODAL"; //모달 창 열기
 const CLOSE_MODAL = "mypage/CLOSE_MODAL"; //모달 창 닫기
 const SAVE_MODAL = "mypage/SAVE_MODAL"; //프로필색깔,이름,가족관계 저장하기
 const SHOWMORE = "mypage/SHOWMORE";
+const PROFILEIMAGE = "mypage/PROFILEIMAGE"; //프로필사진:true
+
 /* 액션 생성함수 만들기 */
-// export const openMyPageModal = myid => ({ type: OPEN_MODAL, payload: myid });
 export const openMyPageModal = member => ({
   type: OPEN_MODAL,
   payload: member
@@ -18,8 +19,23 @@ export const showMore = memberLenth => ({
   type: SHOWMORE,
   payload: memberLenth
 });
+
+/////////////////////////////////////////////////////////////////
+export const SET_PROFILEIMG = "mypage/SET_PROFILEIMG";
+export const setProfileImg = profileImg => ({
+  type: SET_PROFILEIMG,
+  payload: profileImg
+});
+
+/////////////////////////////////////////////////////////////////
+
 /* 초기 상태 선언 */
 const initialState = {
+  /////////////////////////////
+
+  profileImg: "",
+  //imageUrl:'',
+  /////////////////////////////
   rowsToDisplay: 2,
   visible: false,
   member: "",
@@ -96,78 +112,18 @@ export default function mypage(state = initialState, action) {
 
         //members: state.members.find(member => member.id === action.payload.id).map(info=>({...myinfo}))
       };
+    ////////////////////////////////////////////
+    // case profileImage:
+    //   return{
+    //     ...state,
+    //     profileImage:action.payload
+    //   }
+
+    case SET_PROFILEIMG:
+      return { ...state, profileImg: action.payload };
+    ////////////////////////////////////////////
+
     default:
       return state;
   }
 }
-// import { createAction, handleActions } from 'redux-actions';
-// import { Map } from 'immutable';
-
-// /* 액션 타입 만들기 */
-// const OPEN_MODAL = "mypage/OPEN_MODAL"; //모달 창 열기
-// const CLOSE_MODAL = "mypage/CLOSE_MODAL"; //모달 창 닫기
-// const SAVE_MODAL = "mypage/SAVE_MODAL"; //프로필색깔,이름,가족관계 저장하기
-
-// /* 액션 생성함수 만들기 */
-// // export const openMyPageModal = myid => ({ type: OPEN_MODAL, payload: myid });
-// export const openMyPageModal = createAction(OPEN_MODAL);
-// export const closeMyPageModal = createAction(CLOSE_MODAL);
-// export const saveMypageModal = createAction(SAVE_MODAL);
-
-// /* 초기 상태 선언 */
-// const initialState = {
-//   visible: false,
-//   members:List([Map({
-//     id: 1,
-//     name: "브루스 웨인",
-//     relation: "아빠",
-//     date: "2019-10-11",
-//     color: "red"
-//   }),
-//   Map({
-//     id: 2,
-//     name: "할리 퀸",
-//     relation: "엄마",
-//     date: "2019-10-11",
-//     color: "blue"
-//   }),
-//   Map({
-//     id: 3,
-//     name: "조커",
-//     relation: "형",
-//     date: "2019-10-11",
-//     color: "green"
-//   }),
-//   Map({
-//     id: 4,
-//     name: "데드 샷",
-//     relation: "나",
-//     date: "2019-10-11",
-//     color: "yellow"
-//   }),
-//   Map({
-//     id: 5,
-//     name: "둠스데이",
-//     relation: "동생",
-//     date: "2019-10-11",
-//     color: "violet"
-//   })
-//   ])
-// };
-
-// /* 리듀서 선언 */
-// export default handleActions({
-
-//   [OPEN_MODAL]:(state,action) =>{
-//     const members = action.payload;
-//     return state.set('visible', true)
-//                     .set('members', Map(members))
-//   },
-//   [CLOSE_MODAL]:(state,action)=>state.set('visible', false),
-//   [SAVE_MODAL]:(state,action)=>{
-//     const { id, value } = action.payload;
-//     return state.setIn(['members', id], value);
-//     // const index = state.findIndex(members => members.get('id') === action.payload.id);
-//     // return state.mergeIn([index], action.payload.members);
-//   }
-// },initialState)

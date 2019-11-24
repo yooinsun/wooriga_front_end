@@ -15,16 +15,15 @@ import {
   Upload,
   message
 } from "antd";
-import reqwest from "reqwest";
 import Headers from "./statics/HeaderLayout";
 import ChosensContainer from "../containers/ChosensContainer";
 
 //////////////////////
+import defaultImage from "../images/default.PNG";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import MyPageModal from "./MyPageModal";
 const { Content } = Layout;
 const { Text } = Typography;
-
 // const MemberProfileContainer = styled.div`
 //   display: flex;
 //   width: 90vw;
@@ -44,75 +43,64 @@ const { Text } = Typography;
 // `;
 /////////////////////////////
 
-//class MyPage extends Component {
-// constructor(props) {
-//   super(props);
+const OverCard = styled(Card)`
+  && {
+    .ant-card-body {
+      padding: 0 2%;
+      height: 27vh;
+    }
+  }
+`;
 
-//   this.state = {
-//     //upload
-//     loading: false,
+const ChallengeCardTitle = styled.div`
+  float: left;
+  height: 30%;
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.75);
+  display: contents;
+`;
 
-//     members: [
-//       {
-//         id: 1,
-//         name: "브루스 웨인",
-//         relation: "아빠",
-//         //color:"#f44336"
-//         color: "red"
-//       },
-//       {
-//         id: 2,
-//         name: "할리 퀸",
-//         relation: "엄마",
-//         //color: "#e91e63"
-//         color: "pink"
-//       },
-//       {
-//         id: 3,
-//         name: "조커",
-//         relation: "형",
-//         //color: "#9c27b0"
-//         color: "violet"
-//       },
-//       {
-//         id: 4,
-//         name: "데드 샷",
-//         relation: "나",
-//         //color: "#03a9f4"
-//         color: "blue"
-//       },
-//       {
-//         id: 5,
-//         name: "둠스데이",
-//         relation: "동생",
-//         //color: "#ffeb3b"
-//         color: "yellow"
-//       }
-//     ]
-//   };
-// }
+const ChallengeCardDate = styled.div`
+  font-size: 1rem;
+  height: 30%;
+  float: left;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.75);
+  display: contents;
+`;
 
-// //modal 설정
-// handleshowModal = () => {
-//   this.setState({
-//     visible: true
-//   });
-// };
+const ChallengeCard = styled.div`
+  height: 70%;
+  padding: 20% 4%;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 10px 10px 10px 10px;
 
-// handleOk = e => {
-//   console.log(e);
-//   this.setState({
-//     visible: false
-//   });
-// };
+  display: flex;
+  // width: 97%;
+  // height: 120px;
+  // background: #ffffff;
+  // -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+  //   0 6px 6px rgba(0, 0, 0, 0.23);
+  // -moz-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+  //   0 6px 6px rgba(0, 0, 0, 0.23);
+  // -ms-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  // -o-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  // box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  & + & {
+    margin-top: 1rem;
+  }
+`;
 
-// handleCancel = e => {
-//   console.log(e);
-//   this.setState({
-//     visible: false
-//   });
-// };
+const CarouselArray = ["1", "2", "3"];
 
+const WhiteBackgroundLayout = styled(Content)`
+  background: white;
+`;
+
+const MypageLayout = styled(Content)`
+  margin: 0 16px;
+`;
 //myIcon
 
 const MyIcon = styled.div`
@@ -126,25 +114,29 @@ const MyIcon = styled.div`
 `;
 
 //icon
-const ProgressIcon = styled.div`
+const RecordCircle = styled.div`
   position: relative;
-  width: 85px;
-  height: 85px;
+  width: 100px;
+  height: 100px;
   border-radius: 5rem;
   background: #f15f5f;
   text-align: center;
-  float: left;
+  margin-left: 0.3rem;
+  margin-top: 0.25rem;
 `;
-const ProgressInnerIcon = styled.div`
+
+const RecordCircleInfo = styled.div`
+  padding: 15%;
+  margin-left: 0.2rem;
+`;
+const RecordInnerCircle = styled.div`
   position: relative;
-  width: 79px;
-  height: 79px;
-  border: 1.5px #ffffff solid;
+  width: 112px;
+  height: 112px;
+  border: 1.5px #f15f5f solid;
   border-radius: 5rem;
   text-align: center;
   float: left;
-  margin-left: 0.18rem;
-  margin-top: 0.18rem;
 `;
 
 const MemeberIcon = styled.div`
@@ -156,6 +148,32 @@ const MemeberIcon = styled.div`
   ${profileColor}
   float: left;
 `;
+
+const SettingText = styled(Text)`
+  float: right;
+`;
+const TitleText = styled(Text)`
+  font-weight: 600;
+  font-size: x-large;
+`;
+const MyInfo = styled.div`
+  width: 70%;
+  height: 100%;
+  float: right;
+  margin-top: 0.8rem;
+  font-size: initial;
+`;
+// const FamilyInfoCard = styled.div(Card)`
+
+// `;
+
+const RecordContainer = styled.div`
+  margin-left: 10rem;
+  margin-top: 1rem;
+  font-size: large;
+  padding-top: 1.5rem;
+`;
+
 //////////////////////////////////////////
 
 // const MemeberIconBorder = styled.div`
@@ -171,7 +189,8 @@ function MyPage({
   myid,
   visible,
   onShowMoreBtn,
-  rowsToDisplay
+  rowsToDisplay,
+  MovedetailPage
 }) {
   console.log("mypage-----------");
   console.log(visible);
@@ -180,19 +199,15 @@ function MyPage({
   console.log("mypage-----------");
 
   return (
-    <Layout style={{ minHeight: "100vh", background: "white" }}>
+    <WhiteBackgroundLayout>
       <Headers content="내정보" />
       <ChosensContainer />
-      <Content style={{ margin: "0 16px" }}>
+      <MypageLayout>
         <br />
-        {/* 내정보 */}
+
         <div>
-          <Text strong style={{ fontSize: "large" }}>
-            내 정보
-          </Text>
-          <Text style={{ float: "right" }} onClick={onShow}>
-            설정
-          </Text>
+          <TitleText>내 정보</TitleText>
+          <SettingText onClick={onShow}>설정</SettingText>
         </div>
 
         <Card
@@ -203,28 +218,27 @@ function MyPage({
           }}
         >
           <MyIcon />
-          <div
+          {/* <div
             style={{
               width: "70%",
               height: "100%",
               float: "right",
               marginTop: "0.8rem"
             }}
-          >
+          > */}
+          <MyInfo>
             <Tag color="#f15f5f">맏언니지롱</Tag>
             <Text strong> 유인선</Text>
             <br />
             <Text>현재 진행중인 챌린지</Text>
             <Text>3</Text>
-          </div>
+          </MyInfo>
         </Card>
 
         {/* 우리 가족 */}
         <div>
-          <Text strong style={{ fontSize: "large" }}>
-            우리 가족
-          </Text>
-          <Text style={{ float: "right" }}>편집</Text>
+          <TitleText>우리 가족</TitleText>
+          <SettingText onClick={MovedetailPage}>편집</SettingText>
 
           <List
             itemLayout="vertical"
@@ -235,10 +249,6 @@ function MyPage({
               <List.Item key={member.id}>
                 <Card size="small" style={{ height: "10vh" }}>
                   <MemeberIcon color={member.color} />
-                  {/* 
-                    <MemberProfileContainer>
-                      <MemberProfile key={member.id} color={member.color} />
-                    </MemberProfileContainer> */}
 
                   <div style={{ margin: "3% 20%" }}>
                     <Tag
@@ -263,34 +273,44 @@ function MyPage({
 
         {/* 나의 기록 */}
         <div>
-          <Text strong style={{ fontSize: "large" }}>
-            나의 기록
-          </Text>
+          <TitleText>나의 기록</TitleText>
           <br />
-          <br />
-          <ProgressIcon>
-            <ProgressInnerIcon>
-              <div style={{ marginTop: "0.6rem", marginLeft: "0.2rem" }}>
-                <Text style={{ fontSize: "x-small", color: "white" }}>
-                  달성률
-                </Text>
-                <Text strong style={{ fontSize: "large", color: "white" }}>
-                  80.8%
-                </Text>
-              </div>
-            </ProgressInnerIcon>
-          </ProgressIcon>
-          <div style={{ marginLeft: "8rem", marginTop: "1rem" }}>
-            <Text>총 10개 참가</Text>
-            <br />
-            <Text>성공</Text>
-            <Text style={{ color: "#9FC93C", margin: "0 1rem" }}>5</Text>
-            <Text>실패</Text>
-            <Text style={{ color: "#F15F5F", margin: "0 1rem" }}>5</Text>
+          <div style={{ margin: "3% 0px 13% 0" }}>
+            <RecordInnerCircle>
+              <RecordCircle>
+                <RecordCircleInfo>
+                  <Text style={{ fontSize: "medium", color: "white" }}>
+                    달성률
+                  </Text>
+                  <Text strong style={{ fontSize: "20px", color: "white" }}>
+                    80.8%
+                  </Text>
+                </RecordCircleInfo>
+              </RecordCircle>
+            </RecordInnerCircle>
+            <RecordContainer>
+              <Text>총 10개 참가</Text>
+              <br />
+              <Text>성공</Text>
+              <Text style={{ color: "#9FC93C", margin: "0 1rem" }}>5</Text>
+              <Text>실패</Text>
+              <Text style={{ color: "#F15F5F", margin: "0 1rem" }}>5</Text>
+            </RecordContainer>
           </div>
+          <br />
+
+          <OverCard bordered={false}>
+            {CarouselArray.map(index => (
+              <ChallengeCard key={index}>
+                <ChallengeCardTitle>{`저녁식사하기`}</ChallengeCardTitle>
+                <br />
+                <ChallengeCardDate>{`19.11`}</ChallengeCardDate>
+              </ChallengeCard>
+            ))}
+          </OverCard>
         </div>
-      </Content>
-    </Layout>
+      </MypageLayout>
+    </WhiteBackgroundLayout>
   );
 }
 

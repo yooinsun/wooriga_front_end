@@ -5,93 +5,17 @@ import * as loginActions from "../store/modules/login";
 import MyPageModal from "../components/MyPageModal";
 import MyPage from "../components/MyPage";
 import { bindActionCreators } from "redux";
-import { Icon } from "antd";
-
-const myInfo = {
-  id: 4,
-  name: "데드 샷",
-  relation: "나",
-  color: "yellow"
-};
-
-// function beforeUpload(file) {
-//   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-//   if (!isJpgOrPng) {
-//     console.log("You can only upload JPG/PNG file!");
-//   }
-//   const isLt2M = file.size / 1024 / 1024 < 2;
-//   if (!isLt2M) {
-//     console.log("Image must smaller than 2MB!");
-//   }
-//   return isJpgOrPng && isLt2M;
-// }
-// function getBase64(img, callback) {
-//   const reader = new FileReader();
-//   reader.addEventListener("load", () => callback(reader.result));
-//   reader.readAsDataURL(img);
-// }
-// class MyPageContainer extends Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.state = {
-//       name: "",
-//       relation: "",
-//       color: ""
-//     };
-//   }
-
-//   handleShowModal = ({ id, name, kakaoID, colorList }) => {
-//     const { MyPageActions } = this.props;
-//     MyPageActions.openModal(id, name, kakaoID, colorList);
-//   };
-
-//   handleCloseModal = () => {
-//     const { MyPageActions } = this.props;
-//     MyPageActions.closeModal();
-//   };
-
-//   handleImgChange = info => {
-//     if (info.file.status === "uploading") {
-//       this.setState({ loading: true });
-//       return;
-//     }
-//     if (info.file.status === "done") {
-//       // Get this url from response in real world.
-//       getBase64(info.file.originFileObj, imageUrl =>
-//         this.setState({
-//           imageUrl,
-//           loading: false
-//         })
-//       );
-//     }
-//   };
-
-//   handleSaveBtn = ({ id, name, relation, color }) => {
-//     const { MyPageActions } = this.props;
-//     const newMyInformation = {
-//       ...userInfo,
-//       name: name,
-//       relation: relation,
-//       color: color
-//     };
-//     this.handleCloseModal();
-//     MyPageActions.saveMypage(newMyInformation);
-//   };
-
-//   render() {
-//     const { members, myinfo, visible } = this.props;
-//     return (
-//       <MyPageModal
-//         visible={visible}
-//         onCancle={this.handleCloseModal}
-//         onSave={this.handleSaveBtn}
-//       />
-//     );
-//   }
-// }
+import MyPageDetail from "../components/MyPageDetail";
 
 class MyPageContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectImage: "",
+      imageUrl: ""
+    };
+  }
+
   handleShowModal = members => {
     const { MyPageActions } = this.props;
     MyPageActions.openMyPageModal(members);
@@ -112,22 +36,61 @@ class MyPageContainer extends Component {
     this.handleCloseModal();
     MyPageActions.saveMypageModal(members);
   };
-  //////////////////////////////////
 
   handleshowMore = ({ memberlength }) => {
-    console.log("제잫");
     const { MyPageActions } = this.props;
-    MyPageActions.showMore(5);
+    MyPageActions.showMore(memberlength);
     console.log("memberlenth는 : " + memberlength);
-    //rowsToDisplay = 5;
   };
-  //////////////////////////////////////////
 
+  handleInputChange = e => {
+    const { profileImg, MyPageActions } = this.props;
+    console.log("profileImg", profileImg);
+    MyPageActions.setProfileImg(e.target.value);
+  };
+
+  handleImgOnChange = e => {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    console.log("e.target.files[0]", e.target.files[0]);
+
+    reader.onloadend = () => {
+      this.setState(
+        {
+          selectImage: file,
+          imageUrl: reader.result
+        },
+        () => {
+          console.log(this.state.selectImage);
+
+          // var formData = new FormData();
+          // formData.append("file", this.state.selectedFile);
+          // console.log("formData : ", formData.get("file"));
+          // let imgHeight = document.getElementById("circlePlus").clientHeight;
+          // let imgWidth = document.getElementById("circlePlus").clientWidth;
+          let imgHeight = "30px";
+          let imgWidth = "30px";
+          console.log("imgHeight--------------------------");
+          console.log(imgHeight, imgWidth);
+          console.log("imgHeight--------------------------");
+        }
+      );
+    };
+
+    console.log("timing");
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  MovedetailPage = () => {
+    window.location.assign("/mypage_detail");
+  };
+  //////////////////////////////////
   render() {
     const myid = parseInt(window.sessionStorage.getItem("id")); //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
-    const { members, visible, logged, rowsToDisplay } = this.props;
+    const { members, visible, logged, rowsToDisplay, profileImg } = this.props;
     let memberlength = members.length;
-
+    let { imageUrl } = this.state;
+    let $initImg = null;
     console.log("mypagecontainer-----------");
     console.log(`id is ${myid}`);
     console.log(visible);
@@ -135,6 +98,7 @@ class MyPageContainer extends Component {
     console.log(memberlength);
     console.log(rowsToDisplay);
     console.log(logged);
+    console.log(profileImg);
     console.log("mypagecontainer-----------");
 
     return (
@@ -143,10 +107,10 @@ class MyPageContainer extends Component {
           myid={myid}
           visible={visible}
           members={members}
-          //onClickModal={this.handleShowModal(myid)}
           onShow={this.handleShowModal}
           onShowMoreBtn={this.handleshowMore}
           rowsToDisplay={rowsToDisplay}
+          MovedetailPage={this.MovedetailPage}
         />
         <MyPageModal
           myid={myid}
@@ -157,7 +121,12 @@ class MyPageContainer extends Component {
           onLogout={this.handleLogout}
           onSave={this.handleSaveModal}
           logged={logged}
+          ImgOnChange={this.handleImgOnChange}
+          imageUrl={imageUrl}
+          $initImg={$initImg}
+          onChange={this.handleInputChange}
         />
+        {/* <MyPageDetail backRouter={this.handlebackRouter} /> */}
       </Fragment>
     );
   }
@@ -166,10 +135,12 @@ class MyPageContainer extends Component {
 // 리덕스 스토어 안의 상태를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수
 //state 를 파라미터로 받아온다 . 현재 store 가 가지고 있는 상태
 const mapStateToProps = ({ mypage, login }) => ({
+  imageUrl: mypage.profileImage,
   visible: mypage.visible,
   members: mypage.members,
   logged: login.logged,
-  rowsToDisplay: mypage.rowsToDisplay
+  rowsToDisplay: mypage.rowsToDisplay,
+  profileImg: mypage.profileImg
 });
 
 //액션 생성 함수를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수

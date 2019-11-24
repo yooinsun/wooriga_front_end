@@ -10,6 +10,7 @@ import myChallengeDetailContainer from "./containers/myChallengeDetailContainer"
 import "antd/dist/antd.css";
 
 import myPageContainer from "./containers/MyPageContainer";
+import myPageDetailContainer from "./containers/MyPageDetailContainer";
 import checkSignUp from "./components/CheckSignUp";
 // import MakeGroup from "./components/MakeGroup";
 
@@ -29,6 +30,7 @@ function App() {
       />
 
       <Route path="/mypage" component={myPageContainer} />
+      <Route path="/mypage_detail" component={myPageDetailContainer} />
       {/* <Route path="/makegroup" component={MakeGroup} /> */}
       <Route path="/checksignup" component={checkSignUp} />
 

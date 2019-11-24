@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from "react";
 import styled, { css } from "styled-components";
-import { Upload, Icon, message, Input, Button, Typography } from "antd";
+import { Input, Button, Typography } from "antd";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropType from "prop-types";
 import "./ColorPicker.css";
+import circlePlus from "../images/circlePlus.PNG";
 const { Text } = Typography;
 
 const PaletteItem = ({ color, active, onClick }) => {
@@ -173,7 +174,7 @@ const ModalTemplate = styled.div`
   background-color: white;
   position: fixed;
   height: auto;
-  height: 30rem;
+  height: 34rem;
   width: 20rem;
   padding: 1rem;
   top: 50%;
@@ -188,6 +189,16 @@ const ModalTemplate = styled.div`
       z-index: 15;
     `}
 `;
+const MyIcon = styled.div`
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border: 1.5px #f15f5f solid;
+  border-radius: 5rem;
+  text-align: center;
+  float: center;
+  margin: 1rem 36%;
+`;
 
 function MyPageModal({
   members,
@@ -196,18 +207,69 @@ function MyPageModal({
   logged,
   onLogout,
   onSave,
-  onClose
+  onClose,
+  ImgOnChange,
+  imageUrl,
+  $initImg,
+  //////////////////////
+  onChange
+  //////////////////////
 }) {
-  //let name = members.find(member => member.id === myid).name;
+  let name = members.find(member => member.id === myid).name;
   let relation = members.find(member => member.id === myid).relation;
   console.log("mypagemodal-----------");
-  //console.log(name);
+  console.log(name);
   console.log(relation);
   //console.log(members);
   console.log(visible);
   console.log(myid);
   console.log(logged);
+  console.log(imageUrl);
+  console.log($initImg);
   console.log("mypagemodal-----------");
+
+  if (imageUrl) {
+    $initImg = (
+      <>
+        {/* <label htmlFor="file-input"> */}
+        <img
+          id={circlePlus}
+          src={imageUrl}
+          alt="imageUrl"
+          width="100%"
+          height="100%"
+        />
+        {/* </label> */}
+        <input
+          style={{ display: "none" }}
+          id="file-input"
+          type="file"
+          name="file"
+          onChange={e => ImgOnChange(e)}
+        />
+      </>
+    );
+  } else {
+    $initImg = (
+      <>
+        <label htmlFor="file-input">
+          <img
+            src={circlePlus}
+            alt={"circlePlus"}
+            style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
+          />
+        </label>
+        <input
+          style={{ display: "none" }}
+          id="file-input"
+          type="file"
+          name="file"
+          onChange={e => ImgOnChange(e)}
+        />
+      </>
+    );
+  }
+
   return (
     <ModalBackground visible={visible}>
       <ModalTemplate visible={visible}>
@@ -215,7 +277,23 @@ function MyPageModal({
           로그아웃
         </Text>
         <br />
-
+        {/* <MyIcon /> */}
+        {imageUrl ? (
+          <MyIcon>
+            <img
+              id={"circlePlus"}
+              src={imageUrl}
+              alt="imageUrl"
+              width="100%"
+              height="100%"
+            />
+          </MyIcon>
+        ) : (
+          <MyIcon>{$initImg}</MyIcon>
+        )}
+        {/* <MyIcon onClick {e => ImgOnChange(e)}/> */}
+        {/* <div onClick={e => ImgOnChange(e)}>선택 후 이미지 업로드</div> */}
+        <br />
         <div
           style={{ borderBottom: "1px solid lightgray", fontsize: "initial" }}
         >
@@ -229,7 +307,7 @@ function MyPageModal({
             이름
           </Text>
           <Input
-            //placeholder={name}
+            placeholder={name}
             style={{
               border: "none",
               margin: "0 0 0 2.5rem",
@@ -238,7 +316,6 @@ function MyPageModal({
             }}
           />
         </div>
-
         <div
           style={{ borderBottom: "1px solid lightgray", fontsize: "initial" }}
         >
@@ -280,6 +357,7 @@ function MyPageModal({
             {myid}
           </Text>
         </div>
+        <br />
         <Text strong style={{ fontSize: "large" }}>
           컬러
         </Text>
@@ -288,6 +366,7 @@ function MyPageModal({
           자신을 표현할 색상을 골라주세요
         </Text>
         <Palette selected="#f44336" />
+        <br /> <br />
         <Button onClick={onSave} style={{ float: "right", fontweight: "bold" }}>
           저장
         </Button>
@@ -304,7 +383,9 @@ MyPageModal.propTypes = {
   id: PropType.number,
   members: PropType.array,
   onLogout: PropType.func,
-  onSave: PropType.func
+  onSave: PropType.func,
+  ImgOnChange: PropType.func,
+  onChange: PropType.func
 };
 
 export default MyPageModal;
